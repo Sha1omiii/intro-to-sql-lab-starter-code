@@ -74,30 +74,32 @@ FROM cities
 WHERE countrycode = (
     SELECT code
     FROM countries
-    WHERE region = 'Southern Europe'
-    ORDER BY population ASC
-    LIMIT 1
+    WHERE name = 'San Marino'
 )
-AND name <> (
-    SELECT name
-    FROM countries
-    WHERE region = 'Southern Europe'
-    ORDER BY population ASC
-    LIMIT 1
-);
+AND name <> 'San Marino';
+
 
 -- Clue #5: Oh no, she pulled a switch – there are two cities with very similar names, but in totally different parts of the globe! She's headed to South America as we speak; go find a city whose name is like the one we were headed to, but doesn't end the same. Find out the city, and do another search for what country it's in. Hurry!
 
 -- Write SQL query here
-SELECT name
+
+-- i got Serravalle as an answer from number 4
+SELECT name, countrycode
 FROM cities
 WHERE countrycode IN (
     SELECT code
     FROM countries
     WHERE region = 'South America'
 )
-AND name LIKE '%del%'
-AND name NOT LIKE '%Vaticano%';
+AND name LIKE 'Serr%';
+
+SELECT name 
+FROM countries
+WHERE code = (
+    SELECT countrycode
+    FROM cities
+    WHERE name = 'Serra'
+);
 
 
 
@@ -106,13 +108,18 @@ AND name NOT LIKE '%Vaticano%';
 -- follow right behind you!
 
 -- Write SQL query here
-SELECT capital
-FROM countries
-WHERE code = (
-    SELECT countrycode
-    FROM cities
-    WHERE name = 'Ciudad del Este'
-)
+-- SELECT capital
+-- FROM countries
+-- WHERE name = 'Brazil';
+
+SELECT name
+FROM cities
+WHERE id = (
+    SELECT capital
+    FROM countries
+    WHERE name = 'Brazil'
+);
+
 
 
 
